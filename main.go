@@ -13,7 +13,7 @@ import (
 
 func main() {
 	device := flag.String("device", "", "path to keyboard character device. example: /dev/input/event42")
-	keymapStr := flag.String("keymap", "", "example: LeftShift=Escape,RightCtrl=End")
+	keymapStr := flag.String("keymap", "", "example: LeftCtrl=Esc,LeftShift=Home,RightShift=End")
 
 	flag.Parse()
 
