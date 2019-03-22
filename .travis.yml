@@ -1,0 +1,22 @@
+language: go
+go: 1.12
+
+env:
+  global:
+    - GO111MODULES=on
+
+script: /bin/true
+
+before_deploy:
+  - GOOS=linux
+  - GOARCH=amd64
+  - go build -ldflags '-w -s'
+  - tar -cJf osm-${TRAVIS_TAG}-${GOARCH}.tar.xz osm
+
+deploy:
+  provider: releases
+  api_key: $GITHUB_TOKEN
+  file: osm-${TRAVIS_TAG}-${GOARCH}.tar.xz
+  skip_cleanup: true
+  on:
+    tags: true
