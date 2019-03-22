@@ -2,11 +2,9 @@
 
 Alternative to [xcape](https://github.com/alols/xcape) for Wayland.
 
-## Build
+## Installation
 
-```
-$ GO111MODULE=on go build
-```
+Pre-built binaries are available. See [releases](https://github.com/ursm/osm/releases).
 
 ## Usage
 
