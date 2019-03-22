@@ -111,7 +111,7 @@ func handleKeyEvent(ev evdev.InputEvent, writer uinput.Keyboard, keymap map[int]
 	}
 
 	key := int(ev.Code)
-	extraKey, isTrigger := keymap[key]
+	translatedKey, isTrigger := keymap[key]
 
 	switch evdev.KeyEventState(ev.Value) {
 	case evdev.KeyDown:
@@ -128,7 +128,7 @@ func handleKeyEvent(ev evdev.InputEvent, writer uinput.Keyboard, keymap map[int]
 		return evdev.KEY_UNKNOWN
 	case evdev.KeyUp:
 		if key == holdKey {
-			writer.KeyPress(extraKey)
+			writer.KeyPress(translatedKey)
 		} else {
 			writer.KeyUp(key)
 		}
