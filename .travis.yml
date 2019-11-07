@@ -7,16 +7,19 @@ env:
 
 script: /bin/true
 
-before_deploy:
-  - GOOS=linux
-  - GOARCH=amd64
-  - go build -ldflags '-w -s'
-  - tar -cJf osm-${TRAVIS_TAG}-${GOARCH}.tar.xz osm
+before_deploy: >
+  mkdir assets
+
+  for arch in amd64 386; do
+    CGO_ENABLED=1 GOOS=linux GOARCH=$arch go build -ldflags '-w -s'
+    tar -caf assets/osm-${TRAVIS_TAG}-${arch}.tar.xz osm
+  done
 
 deploy:
   provider: releases
   api_key: $GITHUB_TOKEN
-  file: osm-${TRAVIS_TAG}-${GOARCH}.tar.xz
+  file_glob: true
+  file: assets/*
   skip_cleanup: true
   on:
     tags: true
