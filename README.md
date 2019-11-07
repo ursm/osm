@@ -6,6 +6,14 @@ Alternative to [xcape](https://github.com/alols/xcape) for Wayland.
 
 Pre-built binaries are available. See [releases](https://github.com/ursm/osm/releases).
 
+Or install it yourself as:
+
+```
+$ GO111MODULE=on
+$ go build
+$ go install
+```
+
 ## Usage
 
 Since osm creates a virtual keyboard device to write key events, it must be run as root (or set the permissions of `/dev/uinput` appropriately).
