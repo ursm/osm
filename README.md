@@ -32,13 +32,14 @@ Use udev and systemd to recognize the connected keyboards and automatically star
 
 ```
 # /etc/udev/rules.d/99-osm.rules
-ACTION=="add", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}=="1", ENV{DEVPATH}!="/devices/virtual/input/*", TAG+="systemd", ENV{SYSTEMD_ALIAS}+="/sys/devices/virtual/input/%k", RUN+="/bin/systemctl --no-block start osm@%k.service"
+ACTION=="add", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}=="1", ENV{DEVPATH}!="/devices/virtual/input/*", TAG+="systemd", ENV{SYSTEMD_ALIAS}+="/sys/devices/virtual/input/%k", ENV{SYSTEMD_WANTS}+="osm@%k.service"
 ```
 
 ```
 # /etc/systemd/system/osm@.service
 [Unit]
 BindsTo=sys-devices-virtual-input-%i.device
+After=sys-devices-virtual-input-%i.device
 
 [Service]
 ExecStart=/path/to/osm -device /dev/input/%I -keymap LeftCtrl=Esc,LeftShift=Home,RightShift=End
