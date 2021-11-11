@@ -1,2 +1,2 @@
-/dist/
-/osm
+/target
+**/*.rs.bk

@@ -1,0 +1,17 @@
+cargo-features = ["strip"]
+
+[package]
+name = "osm"
+version = "2.0.0"
+edition = "2021"
+description = "A utility for Linux systems that maps a modifier key to another key when pressed alone"
+authors = ["Keita Urashima <ursm@ursm.jp>"]
+
+[dependencies]
+clap = "3.0.0-beta.5"
+evdev = "0.11.1"
+
+[profile.release]
+codegen-units = 1
+lto = true
+strip = "symbols"

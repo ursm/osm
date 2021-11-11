@@ -1,6 +1,11 @@
+--- context ---
+desc: cargo metadata --format-version=1 --no-deps | jq -r .packages[0].description
+usage: cargo run --quiet -- --help | sed 's/\s*$//'
+
+--- template ---
 # One-shot modifier (osm)
 
-A utility for Linux systems that maps a modifier key to another key when pressed alone
+{{desc}}
 
 ## Installation
 
@@ -16,39 +21,7 @@ $ target/debug/osm --help
 ## Usage
 
 ```
-osm 2.0.0
-
-Keita Urashima <ursm@ursm.jp>
-
-A utility for Linux systems that maps a modifier key to another key when pressed alone
-
-USAGE:
-    osm --device <DEVICE> --keymap <KEYMAP>...
-
-OPTIONS:
-    -d, --device <DEVICE>
-            Path of keyboard device
-
-            Example: --device /dev/input/event42
-
-            The device path can be found with `cat /proc/bus/input/devices` or `ls -l /dev/input/by-
-            id`.
-
-    -h, --help
-            Print help information
-
-    -k, --keymap <KEYMAP>...
-            Source and destination keys in the form `SRC1=DEST1 SRC2=DEST2...`
-
-            Example: --keymap LeftShift=Home RightShift=End
-
-            A list of available key names can be found at [^1] (prefixed by `KEY_`). It is not case-
-            sensitive.
-
-            [^1]: https://docs.rs/evdev/0.11.1/evdev/struct.Key.html
-
-    -V, --version
-            Print version information
+{{{usage}}}
 ```
 
 ### Notes

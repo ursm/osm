@@ -1,0 +1,3 @@
+max_width = 180
+comment_width = 180
+newline_style = "Unix"

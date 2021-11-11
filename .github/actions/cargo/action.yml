@@ -1,0 +1,39 @@
+inputs:
+  target:
+    description: toolchain.target
+    required: false
+
+  components:
+    description: toolchain.components
+    required: false
+
+  command:
+    description: cargo.command
+    required: true
+
+  args:
+    description: cargo.args
+    required: false
+
+  use-cross:
+    description: cargo.use-cross
+    required: false
+    default: false
+
+runs:
+  using: composite
+
+  steps:
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: nightly # for cargo-features = ["strip"]
+        target: ${{ inputs.target }}
+        override: true
+        profile: minimal
+        components: ${{ inputs.components }}
+
+    - uses: actions-rs/cargo@v1
+      with:
+        command: ${{ inputs.command }}
+        args: ${{ inputs.args }}
+        use-cross: ${{ inputs.use-cross }}

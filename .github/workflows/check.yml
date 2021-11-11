@@ -1,0 +1,46 @@
+on: push
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/cargo
+        with:
+          command: run
+          args: -- --help
+
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/cargo
+        with:
+          command: test
+
+  fmt:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/cargo
+        with:
+          components: rustfmt
+          command: fmt
+          args: --check
+
+  clippy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./.github/actions/cargo
+        with:
+          components: clippy
+          command: clippy
