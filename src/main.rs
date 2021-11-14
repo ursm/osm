@@ -25,7 +25,7 @@ struct Opts {
     ///
     /// A list of available key names can be found at [^1] (prefixed by `KEY_`). It is not case-sensitive.
     ///
-    /// [^1]: https://docs.rs/evdev/0.11.1/evdev/struct.Key.html
+    /// [^1]: https://docs.rs/evdev/latest/evdev/struct.Key.html
     #[clap(short, long, required = true, multiple_values = true, parse(try_from_str = parse_keymap))]
     keymap: Vec<(Key, Key)>,
 }
