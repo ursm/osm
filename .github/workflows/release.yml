@@ -4,15 +4,19 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
-
     strategy:
       matrix:
-        target:
-          - aarch64-unknown-linux-gnu
-          - armv7-unknown-linux-gnueabihf
-          - i686-unknown-linux-gnu
-          - x86_64-unknown-linux-gnu
+        include:
+          - target: x86_64-unknown-linux-gnu
+            label: linux-x86_64
+          - target: i686-unknown-linux-gnu
+            label: linux-x86
+          - target: aarch64-unknown-linux-gnu
+            label: linux-aarch64
+          - target: armv7-unknown-linux-gnueabihf
+            label: linux-armv7-eabihf
+
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -24,7 +28,7 @@ jobs:
           args: --release --target ${{ matrix.target }}
           use-cross: true
 
-      - run: echo "TARBALL=osm-${{ github.event.release.tag_name }}-${{ matrix.target }}.tar.xz" >> $GITHUB_ENV
+      - run: echo "TARBALL=osm-${{ github.event.release.tag_name }}-${{ matrix.label }}.tar.xz" >> $GITHUB_ENV
       - run: tar caf $TARBALL --directory=target/${{ matrix.target }}/release osm
 
       - uses: softprops/action-gh-release@v1
