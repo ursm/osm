@@ -63,12 +63,9 @@ fn translate_event(keymap: &KeyMap, ev: InputEvent, pending: Option<Key>) -> (Ve
         },
 
         VAL_UP => {
-            let evs = match pending {
-                Some(pending) if pending == key => match keymap.get(&pending) {
-                    Some(dest) => vec![key_down(*dest), key_up(*dest)],
-                    _ => vec![ev],
-                },
-                Some(pending) => vec![key_up(pending), key_up(key)],
+            let evs = match pending.map(|pend| (pend, keymap.get(&pend))) {
+                Some((pend, Some(dest))) if pend == key => vec![key_down(*dest), key_up(*dest)],
+                Some((pend, _)) => vec![key_down(pend), key_up(key)],
                 _ => vec![ev],
             };
 
@@ -127,7 +124,7 @@ mod tests {
         assert_eq!(pending, None);
 
         let (evs, pending) = translate(key_up(Key::KEY_A), Some(Key::KEY_LEFTALT));
-        assert_eq!(evs, vec![(Key::KEY_LEFTALT, VAL_UP), (Key::KEY_A, VAL_UP)]);
+        assert_eq!(evs, vec![(Key::KEY_LEFTALT, VAL_DOWN), (Key::KEY_A, VAL_UP)]);
         assert_eq!(pending, None);
 
         let (evs, pending) = translate(key_up(Key::KEY_LEFTALT), None);
@@ -139,7 +136,7 @@ mod tests {
         assert_eq!(pending, None);
 
         let (evs, pending) = translate(key_up(Key::KEY_LEFTALT), Some(Key::KEY_RIGHTALT));
-        assert_eq!(evs, vec![(Key::KEY_RIGHTALT, VAL_UP), (Key::KEY_LEFTALT, VAL_UP)]);
+        assert_eq!(evs, vec![(Key::KEY_RIGHTALT, VAL_DOWN), (Key::KEY_LEFTALT, VAL_UP)]);
         assert_eq!(pending, None);
     }
 }
