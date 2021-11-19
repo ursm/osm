@@ -63,9 +63,13 @@ fn translate_event(keymap: &KeyMap, ev: InputEvent, pending: Option<Key>) -> (Ve
         },
 
         VAL_UP => {
-            let evs = match pending.map(|pend| (pend, keymap.get(&pend))) {
-                Some((pend, Some(dest))) if pend == key => vec![key_down(*dest), key_up(*dest)],
-                Some((pend, _)) => vec![key_down(pend), key_up(key)],
+            let evs = match pending.map(|pending| {
+                let dest = if pending == key { keymap.get(&pending) } else { None };
+
+                (pending, dest)
+            }) {
+                Some((_, Some(dest))) => vec![key_down(*dest), key_up(*dest)],
+                Some((pend, _)) => vec![key_down(pend), ev],
                 _ => vec![ev],
             };
 
