@@ -26,7 +26,7 @@ runs:
   steps:
     - uses: actions-rs/toolchain@v1
       with:
-        toolchain: nightly # for cargo-features = ["strip"]
+        toolchain: stable
         target: ${{ inputs.target }}
         override: true
         profile: minimal
