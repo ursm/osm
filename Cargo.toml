@@ -1,6 +1,6 @@
 [package]
 name = "osm"
-version = "2.1.1"
+version = "2.1.2"
 edition = "2021"
 description = "A utility for Linux systems that maps a modifier key to another key when pressed alone"
 authors = ["Keita Urashima <ursm@ursm.jp>"]
