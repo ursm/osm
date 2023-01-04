@@ -9,14 +9,14 @@ use evdev::{Device, Key};
 use osm::{handle_device, KeyMap};
 
 #[derive(Parser)]
-#[clap(version, author, about)]
+#[command(version, author, about)]
 struct Opts {
     /// Path of keyboard device
     ///
     /// Example: --device /dev/input/event42
     ///
     /// The device path can be found with `cat /proc/bus/input/devices` or `ls -l /dev/input/by-id`.
-    #[clap(short, long, required = true, parse(from_os_str))]
+    #[arg(short, long, required = true)]
     device: PathBuf,
 
     /// Source and destination keys in the form `SRC1=DEST1 SRC2=DEST2...`
@@ -26,7 +26,7 @@ struct Opts {
     /// A list of available key names can be found at [^1] (prefixed by `KEY_`). It is not case-sensitive.
     ///
     /// [^1]: https://docs.rs/evdev/latest/evdev/struct.Key.html
-    #[clap(short, long, required = true, multiple_values = true, parse(try_from_str = parse_keymap))]
+    #[arg(short, long, required = true, num_args(1..), value_parser = parse_keymap)]
     keymap: Vec<(Key, Key)>,
 }
 
