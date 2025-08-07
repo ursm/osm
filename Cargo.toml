@@ -6,7 +6,7 @@ description = "A utility for Linux systems that maps a modifier key to another k
 authors = ["Keita Urashima <ursm@ursm.jp>"]
 
 [dependencies]
-clap = { version = "4.5.38", features = ["derive"] }
+clap = { version = "4.5.43", features = ["derive"] }
 evdev = "0.12.2"
 
 [profile.release]
