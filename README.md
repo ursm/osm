@@ -16,7 +16,7 @@ $ target/debug/osm --help
 ## Usage
 
 ```
-osm 2.1.1
+osm 2.1.3
 
 Keita Urashima <ursm@ursm.jp>
 
