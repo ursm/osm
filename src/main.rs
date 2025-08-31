@@ -11,7 +11,7 @@ use osm::{handle_device, KeyMap};
 #[derive(Parser)]
 #[command(version, author, about)]
 struct Opts {
-    /// Path of keyboard device
+    /// Path to the keyboard device
     ///
     /// Example: --device /dev/input/event42
     ///
@@ -23,7 +23,7 @@ struct Opts {
     ///
     /// Example: --keymap LeftShift=Home RightShift=End
     ///
-    /// A list of available key names can be found at [^1] (prefixed by `KEY_`). It is not case-sensitive.
+    /// A list of available key names can be found at [^1] (prefixed by `KEY_`). Key names are not not case-sensitive.
     ///
     /// [^1]: https://docs.rs/evdev/latest/evdev/struct.KeyCode.html
     #[arg(short, long, required = true, num_args(1..), value_parser = parse_keymap)]

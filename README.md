@@ -1,12 +1,12 @@
 # One-shot modifier (osm)
 
-A utility for Linux systems that maps a modifier key to another key when pressed alone
+A utility for Linux systems that remaps a modifier key to another key when pressed alone.
 
 ## Installation
 
 Pre-built binaries are available. See [releases](https://github.com/ursm/osm/releases).
 
-Or build manually:
+To build manually:
 
 ```
 $ cargo build
@@ -16,49 +16,42 @@ $ target/debug/osm --help
 ## Usage
 
 ```
-osm 2.1.3
+A utility for Linux systems that remaps a modifier key to another key when pressed alone.
 
-Keita Urashima <ursm@ursm.jp>
+Usage: osm --device <DEVICE> --keymap <KEYMAP>...
 
-A utility for Linux systems that maps a modifier key to another key when pressed alone
+Options:
+  -d, --device <DEVICE>
+          Path to the keyboard device
 
-USAGE:
-    osm --device <DEVICE> --keymap <KEYMAP>...
+          Example: --device /dev/input/event42
 
-OPTIONS:
-    -d, --device <DEVICE>
-            Path of keyboard device
+          The device path can be found with `cat /proc/bus/input/devices` or `ls -l /dev/input/by-id`.
 
-            Example: --device /dev/input/event42
+  -k, --keymap <KEYMAP>...
+          Source and destination keys in the form `SRC1=DEST1 SRC2=DEST2...`
 
-            The device path can be found with `cat /proc/bus/input/devices` or `ls -l /dev/input/by-
-            id`.
+          Example: --keymap LeftShift=Home RightShift=End
 
-    -h, --help
-            Print help information
+          A list of available key names can be found at [^1] (prefixed by `KEY_`). Key names are not not case-sensitive.
 
-    -k, --keymap <KEYMAP>...
-            Source and destination keys in the form `SRC1=DEST1 SRC2=DEST2...`
+          [^1]: https://docs.rs/evdev/latest/evdev/struct.KeyCode.html
 
-            Example: --keymap LeftShift=Home RightShift=End
+  -h, --help
+          Print help (see a summary with '-h')
 
-            A list of available key names can be found at [^1] (prefixed by `KEY_`). It is not case-
-            sensitive.
-
-            [^1]: https://docs.rs/evdev/latest/evdev/struct.KeyCode.html
-
-    -V, --version
-            Print version information
+  -V, --version
+          Print version
 ```
 
 ### Notes
 
-- Since osm creates a virtual keyboard device to emit key events, it must be run as root (or set the permissions of `/dev/uinput` appropriately).
-- osm behaves strangely when a key is typed at startup. In other words, you can't start it from the shell with the enter key! To avoid this problem, use `sleep 1 && sudo osm ... ` or use the service manager as described below.
+- Since osm creates a virtual keyboard device to emit key events, it must be run as root (or with appropriate permissions on `/dev/uinput`).
+- osm may behave unexpectedly if a key is pressed while it is starting. In particular, you cannot start it directly from a shell using the Enter key. To avoid this, run it with a delay (`sleep 1 && sudo osm ...`) or configure it to run via a service manager as described below.
 
 ## Autostart
 
-Use udev and systemd to recognize the connected keyboards and automatically start osm.
+Use udev and systemd to detect connected keyboards and automatically start osm.
 
 ```
 # /etc/udev/rules.d/99-osm.rules
@@ -76,7 +69,7 @@ ExecStart=/path/to/osm --device /dev/input/%I --keymap LeftShift=Home RightShift
 ```
 
 ```
-$ systemctl daemon-reload
-$ udevadm control --reload
-$ udevadm trigger --action=add
+$ sudo systemctl daemon-reload
+$ sudo udevadm control --reload
+$ sudo udevadm trigger --action=add
 ```
