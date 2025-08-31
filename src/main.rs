@@ -5,7 +5,7 @@ use std::str::FromStr;
 
 use clap::Parser;
 
-use evdev::{Device, Key};
+use evdev::{Device, KeyCode};
 use osm::{handle_device, KeyMap};
 
 #[derive(Parser)]
@@ -25,9 +25,9 @@ struct Opts {
     ///
     /// A list of available key names can be found at [^1] (prefixed by `KEY_`). It is not case-sensitive.
     ///
-    /// [^1]: https://docs.rs/evdev/latest/evdev/struct.Key.html
+    /// [^1]: https://docs.rs/evdev/latest/evdev/struct.KeyCode.html
     #[arg(short, long, required = true, num_args(1..), value_parser = parse_keymap)]
-    keymap: Vec<(Key, Key)>,
+    keymap: Vec<(KeyCode, KeyCode)>,
 }
 
 fn main() -> Result<(), Box<dyn Error>> {
@@ -40,7 +40,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-fn parse_keymap(s: &str) -> Result<(Key, Key), String> {
+fn parse_keymap(s: &str) -> Result<(KeyCode, KeyCode), String> {
     let keys: Vec<_> = s.splitn(2, '=').collect();
 
     if keys.len() != 2 {
@@ -51,7 +51,7 @@ fn parse_keymap(s: &str) -> Result<(Key, Key), String> {
         .map(|key| {
             let key = format!("KEY_{}", key.trim().to_uppercase());
 
-            Key::from_str(&key).map_err(|_| format!("{}: Unknown key name", key))
+            KeyCode::from_str(&key).map_err(|_| format!("{}: Unknown key name", key))
         })
         .collect::<Result<Vec<_>, _>>()
         .map(|v| (v[0], v[1]))
