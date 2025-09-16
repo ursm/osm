@@ -7,7 +7,7 @@ authors = ["Keita Urashima <ursm@ursm.jp>"]
 
 [dependencies]
 clap = { version = "4.5.47", features = ["derive"] }
-evdev = "0.13.1"
+evdev = "0.13.2"
 
 [profile.release]
 codegen-units = 1
