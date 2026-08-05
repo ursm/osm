@@ -15,7 +15,7 @@ $ make
 $ sudo make install
 ```
 
-This installs the binary under `/usr/local/bin` along with the [autostart](#autostart) files. Override `PREFIX`, `BINDIR`, `SYSCONFDIR`, `UNITDIR`, `UDEVRULESDIR`, or `DESTDIR` to put them elsewhere; the systemd unit is generated to match.
+This installs the binary under `/usr/local/bin` along with the [autostart](#autostart) files. Override `PREFIX`, `BINDIR`, `SYSCONFDIR`, `UNITDIR`, `UDEVRULESDIR`, or `DESTDIR` to put them elsewhere; the systemd unit is generated to match. If you set `CARGO_TARGET_DIR`, pass it to the second command too — `sudo` drops it from the environment.
 
 ## Usage
 
@@ -59,9 +59,11 @@ udev and systemd can detect connected keyboards and start osm automatically. `ma
 
 | Source | Installed to | Purpose |
 | --- | --- | --- |
-| [`dist/udev/99-osm.rules`](dist/udev/99-osm.rules) | `/etc/udev/rules.d` | Starts `osm@.service` for each keyboard that appears |
-| [`dist/systemd/osm@.service.in`](dist/systemd/osm@.service.in) | `/etc/systemd/system` | Runs osm against that keyboard |
+| [`dist/udev/99-osm.rules`](dist/udev/99-osm.rules) | `/usr/local/lib/udev/rules.d` | Starts `osm@.service` for each keyboard that appears |
+| [`dist/systemd/osm@.service.in`](dist/systemd/osm@.service.in) | `/usr/local/lib/systemd/system` | Runs osm against that keyboard |
 | [`dist/default/osm`](dist/default/osm) | `/etc/default/osm` | Your key mappings |
+
+The unit is a template: `make install` substitutes `@BINDIR@` and `@SYSCONFDIR@` for the paths it was given. Do the same if you install it by hand. Also note that `make install` overwrites the unit, so if you wrote one yourself before osm 2.2.0, move its `--keymap` arguments into `/etc/default/osm` first.
 
 Set your key mappings in `/etc/default/osm`. Out of the box it maps both Shift keys:
 

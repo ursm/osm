@@ -9,8 +9,8 @@ CARGO_TARGET_DIR ?= target
 PREFIX       ?= /usr/local
 BINDIR       ?= $(PREFIX)/bin
 SYSCONFDIR   ?= /etc
-UNITDIR      ?= $(SYSCONFDIR)/systemd/system
-UDEVRULESDIR ?= $(SYSCONFDIR)/udev/rules.d
+UNITDIR      ?= $(PREFIX)/lib/systemd/system
+UDEVRULESDIR ?= $(PREFIX)/lib/udev/rules.d
 
 all: build
 
@@ -36,4 +36,5 @@ install:
 	fi
 
 README.md: README.md.hms
-	handlematters $< > $@
+	handlematters $< > $@.tmp
+	mv $@.tmp $@

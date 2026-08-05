@@ -2,4 +2,7 @@
 
 # Key mappings in the form "SRC=DEST ...".
 # Run `osm --help` for where to find the available key names.
+#
+# osm requires at least one mapping, so leaving this empty or commented out
+# makes every osm@.service fail to start.
 KEYMAP="LeftShift=Home RightShift=End"
