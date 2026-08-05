@@ -51,8 +51,10 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # handlematters needs a nightly feature.
       - uses: ./.github/actions/cargo
         with:
+          toolchain: nightly
           command: install
           args: --git https://github.com/ursm/handlematters
 

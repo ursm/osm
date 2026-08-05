@@ -1,4 +1,9 @@
 inputs:
+  toolchain:
+    description: toolchain.toolchain
+    required: false
+    default: stable
+
   target:
     description: toolchain.target
     required: false
@@ -26,7 +31,7 @@ runs:
   steps:
     - uses: actions-rs/toolchain@v1
       with:
-        toolchain: stable
+        toolchain: ${{ inputs.toolchain }}
         target: ${{ inputs.target }}
         override: true
         profile: minimal
