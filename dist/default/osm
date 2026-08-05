@@ -3,6 +3,7 @@
 # Key mappings in the form "SRC=DEST ...".
 # Run `osm --help` for where to find the available key names.
 #
-# osm requires at least one mapping, so leaving this empty or commented out
-# makes every osm@.service fail to start.
-KEYMAP="LeftShift=Home RightShift=End"
+# osm is disabled until you set a mapping: with none, each osm@.service starts,
+# finds an empty keymap, and exits without touching the keyboard. Uncomment the
+# line below (and edit it to taste) to enable osm.
+#KEYMAP="LeftShift=Home RightShift=End"

@@ -45,7 +45,7 @@ udev and systemd can detect connected keyboards and start osm automatically. `ma
 
 The unit is a template: `make install` substitutes `@BINDIR@` and `@SYSCONFDIR@` for the paths it was given. Do the same if you install it by hand. Also note that `make install` overwrites the unit, so if you wrote one yourself before osm 2.2.0, move its `--keymap` arguments into `/etc/default/osm` first.
 
-Set your key mappings in `/etc/default/osm`. Out of the box it maps both Shift keys:
+Out of the box osm is disabled and does nothing. Set your key mappings in `/etc/default/osm` to enable it; for example, to map both Shift keys:
 
 ```
 KEYMAP="LeftShift=Home RightShift=End"

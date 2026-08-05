@@ -22,7 +22,7 @@ This installs the binary under `/usr/local/bin` along with the [autostart](#auto
 ```
 A utility for Linux systems that remaps a modifier key to another key when pressed alone.
 
-Usage: osm --device <DEVICE> --keymap <KEYMAP>...
+Usage: osm [OPTIONS] --device <DEVICE>
 
 Options:
   -d, --device <DEVICE>
@@ -32,12 +32,14 @@ Options:
 
           The device path can be found with `cat /proc/bus/input/devices` or `ls -l /dev/input/by-id`.
 
-  -k, --keymap <KEYMAP>...
+  -k, --keymap [<KEYMAP>...]
           Source and destination keys in the form `SRC1=DEST1 SRC2=DEST2...`
 
           Example: --keymap LeftShift=Home RightShift=End
 
-          A list of available key names can be found at [^1] (prefixed by `KEY_`). Key names are not not case-sensitive.
+          With no mappings osm does nothing and exits, so an empty keymap disables it.
+
+          A list of available key names can be found at [^1] (prefixed by `KEY_`). Key names are not case-sensitive.
 
           [^1]: https://docs.rs/evdev/latest/evdev/struct.KeyCode.html
 
@@ -65,7 +67,7 @@ udev and systemd can detect connected keyboards and start osm automatically. `ma
 
 The unit is a template: `make install` substitutes `@BINDIR@` and `@SYSCONFDIR@` for the paths it was given. Do the same if you install it by hand. Also note that `make install` overwrites the unit, so if you wrote one yourself before osm 2.2.0, move its `--keymap` arguments into `/etc/default/osm` first.
 
-Set your key mappings in `/etc/default/osm`. Out of the box it maps both Shift keys:
+Out of the box osm is disabled and does nothing. Set your key mappings in `/etc/default/osm` to enable it; for example, to map both Shift keys:
 
 ```
 KEYMAP="LeftShift=Home RightShift=End"
