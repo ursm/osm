@@ -44,3 +44,18 @@ jobs:
         with:
           components: clippy
           command: clippy
+
+  readme:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: ./.github/actions/cargo
+        with:
+          command: install
+          args: --git https://github.com/ursm/handlematters
+
+      - run: make README.md
+
+      - run: git diff --exit-code README.md

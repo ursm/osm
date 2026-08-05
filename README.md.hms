@@ -11,12 +11,16 @@ usage: cargo run --quiet -- --help | sed 's/\s*$//'
 
 Pre-built binaries are available. See [releases](https://github.com/ursm/osm/releases).
 
-To build manually:
+On Gentoo, osm is packaged in the [ursm overlay](https://github.com/ursm/portage-overlay) as `app-misc/osm`.
+
+To build and install from source:
 
 ```
-$ cargo build
-$ target/debug/osm --help
+$ make
+$ sudo make install
 ```
+
+This installs the binary under `/usr/local/bin` along with the [autostart](#autostart) files. Override `PREFIX`, `BINDIR`, `SYSCONFDIR`, `UNITDIR`, `UDEVRULESDIR`, or `DESTDIR` to put them elsewhere; the systemd unit is generated to match.
 
 ## Usage
 
@@ -31,22 +35,21 @@ $ target/debug/osm --help
 
 ## Autostart
 
-Use udev and systemd to detect connected keyboards and automatically start osm.
+udev and systemd can detect connected keyboards and start osm automatically. `make install` and the Gentoo package put the necessary files in place; the sources live in [`dist`](dist):
+
+| Source | Installed to | Purpose |
+| --- | --- | --- |
+| [`dist/udev/99-osm.rules`](dist/udev/99-osm.rules) | `/etc/udev/rules.d` | Starts `osm@.service` for each keyboard that appears |
+| [`dist/systemd/osm@.service.in`](dist/systemd/osm@.service.in) | `/etc/systemd/system` | Runs osm against that keyboard |
+| [`dist/default/osm`](dist/default/osm) | `/etc/default/osm` | Your key mappings |
+
+Set your key mappings in `/etc/default/osm`. Out of the box it maps both Shift keys:
 
 ```
-# /etc/udev/rules.d/99-osm.rules
-ACTION=="add", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}=="1", ENV{DEVPATH}!="/devices/virtual/input/*", TAG+="systemd", ENV{SYSTEMD_ALIAS}+="/sys/devices/virtual/input/%k", ENV{SYSTEMD_WANTS}+="osm@%k.service"
+KEYMAP="LeftShift=Home RightShift=End"
 ```
 
-```
-# /etc/systemd/system/osm@.service
-[Unit]
-BindsTo=sys-devices-virtual-input-%i.device
-After=sys-devices-virtual-input-%i.device
-
-[Service]
-ExecStart=/path/to/osm --device /dev/input/%I --keymap LeftShift=Home RightShift=End
-```
+Then apply everything:
 
 ```
 $ sudo systemctl daemon-reload

@@ -1,0 +1,7 @@
+[Unit]
+BindsTo=sys-devices-virtual-input-%i.device
+After=sys-devices-virtual-input-%i.device
+
+[Service]
+EnvironmentFile=@SYSCONFDIR@/default/osm
+ExecStart=@BINDIR@/osm --device /dev/input/%I --keymap $KEYMAP

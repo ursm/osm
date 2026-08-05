@@ -1,0 +1,5 @@
+# Environment file for osm@.service, installed as /etc/default/osm.
+
+# Key mappings in the form "SRC=DEST ...".
+# Run `osm --help` for where to find the available key names.
+KEYMAP="LeftShift=Home RightShift=End"

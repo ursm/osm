@@ -1,0 +1,1 @@
+ACTION=="add", KERNEL=="event*", ENV{ID_INPUT_KEYBOARD}=="1", ENV{DEVPATH}!="/devices/virtual/input/*", TAG+="systemd", ENV{SYSTEMD_ALIAS}+="/sys/devices/virtual/input/%k", ENV{SYSTEMD_WANTS}+="osm@%k.service"
